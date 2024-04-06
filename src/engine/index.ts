@@ -1,4 +1,4 @@
-import { calculatePosition, getEmptyCell, isSamePosition } from './helpers'
+import { calculatePosition, getEmptyCell, getInitialGameState, isSamePosition } from './helpers'
 import { init as _init } from './init'
 import { render as _render, clearCell } from './renderer'
 import { Cell, GameState, SnakeBody } from './types'
@@ -71,6 +71,12 @@ export const createGameEngine = () => {
       gameState.snake.unshift(newPosition)
       clearCell(gameState.food)
       gameState.food = getEmptyCell(gameState.snake)
+    } else if (gameState.snake.some((s) => isSamePosition(s, newPosition))) {
+      // Check if colliding with body
+      alert('nabrak');
+      [...gameState.snake, gameState.food]
+        .forEach(clearCell)
+      gameState = getInitialGameState()
     } else {
       const tail = gameState.snake.pop()
 
@@ -89,7 +95,7 @@ export const createGameEngine = () => {
         const cellsToClear = updateGameState()
         render(cellsToClear)
         tick()
-      }, 200)
+      }, 50)
     }
   }
 

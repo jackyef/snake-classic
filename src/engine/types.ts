@@ -1,3 +1,5 @@
+import { DIRECTIONS } from "./constants"
+
 export type Snake = Array<SnakeBody>
 export type SnakeBody = {
   x: number
@@ -11,8 +13,9 @@ export type Cell = {
 export type CellState = 'Snake' | 'Food' | null
 export type GameMap = Array<Array<CellState>>
 
+export type Direction = typeof DIRECTIONS[number] 
 export type GameState = {
   snake: Snake
   food: Cell
-  snakeDirection: 'up' | 'down' | 'left' | 'right'
+  snakeDirection: Direction
 }

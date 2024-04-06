@@ -1,9 +1,9 @@
-import { HEIGHT, WIDTH } from "./constants"
-import { Cell, SnakeBody } from "./types"
+import { DIRECTIONS, HEIGHT, WIDTH } from "./constants"
+import { Cell, Snake, SnakeBody } from "./types"
 
 export const getCellId = (x: number, y: number) => {
   return `cell:${x}-${y}`
-} 
+}
 export const getCell = (x: number, y: number) => {
   return document.getElementById(getCellId(x, y)) as HTMLDivElement
 }
@@ -16,7 +16,7 @@ type PositionDiff = {
 const minMax = (value: number, min: number, max: number) => {
   if (value < min) return max
   if (value > max) return min
-  return value 
+  return value
 }
 
 export const calculatePosition = (snakeBody: SnakeBody, diff: PositionDiff): Cell => {
@@ -57,5 +57,30 @@ export const getEmptyCell = (occupiedCells: Cell[]): Cell => {
     return c
   } else {
     return getEmptyCell(occupiedCells)
+  }
+}
+
+export const getInitialGameState = () => {
+  const snake: Snake = []
+  snake.push(getEmptyCell([]))
+  snake.push({
+    ...snake[0],
+    y: snake[0].y + 1
+  })
+  snake.push({
+    ...snake[1],
+    y: snake[1].y + 1
+  })
+  snake.push({
+    ...snake[2],
+    y: snake[2].y + 1
+  })
+  const food = getEmptyCell(snake)
+  const initialDirections = ['left', 'right'] as const
+
+  return {
+    snake,
+    food,
+    snakeDirection: initialDirections[Math.floor(Math.random() * initialDirections.length)]
   }
 }

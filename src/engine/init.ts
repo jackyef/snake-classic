@@ -1,6 +1,6 @@
 import { HEIGHT, WIDTH } from "./constants"
-import { getCellId, getEmptyCell } from "./helpers"
-import { Cell, GameMap, GameState, Snake } from "./types"
+import { getCellId, getInitialGameState } from "./helpers"
+import { GameMap, GameState } from "./types"
 
 const root = document.querySelector<HTMLDivElement>('#app')
 
@@ -24,25 +24,8 @@ export const init = (): GameState => {
     })
   })
 
-  const initialHeadPosition = {
-    x: Math.floor(Math.random() * WIDTH),
-    y: Math.floor(Math.random() * HEIGHT)
-  }
-
-  const snake: Snake = []
-  snake.push(initialHeadPosition)
-  snake.push({
-    ...initialHeadPosition,
-    y: initialHeadPosition.y + 1
-  })
 
   root!.appendChild(container)
 
-  const food = getEmptyCell(snake)
-
-  return {
-    snake,
-    snakeDirection: 'right',
-    food
-  }
+  return getInitialGameState()
 }
