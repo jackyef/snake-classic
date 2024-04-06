@@ -10,14 +10,30 @@ export const createGameEngine = () => {
   const init = () => {
     gameState = _init()
 
-    // document.addEventListener('keydown', e => {
-    //   switch (e.key) {
-    //     case 'ArrowUp':
-    //     case 'ArrowDown':
-    //     case 'ArrowLeft':
-    //     case 'ArrowRight':
-    //   }
-    // })
+    document.addEventListener('keydown', e => {
+      switch (e.key) {
+        case 'ArrowUp':
+          if (gameState.snakeDirection !== 'down') {
+            gameState.snakeDirection = 'up';
+          }
+          break;
+        case 'ArrowDown':
+          if (gameState.snakeDirection !== 'up') {
+            gameState.snakeDirection = 'down';
+          }
+          break;
+        case 'ArrowLeft':
+          if (gameState.snakeDirection !== 'right') {
+            gameState.snakeDirection = 'left';
+          }
+          break;
+        case 'ArrowRight':
+          if (gameState.snakeDirection !== 'left') {
+            gameState.snakeDirection = 'right';
+          }
+          break;
+      }
+    })
 
     tick()
   }
@@ -77,7 +93,7 @@ export const createGameEngine = () => {
     pause: () => isPaused = true,
     resume: () => {
       isPaused = false,
-      tick()
+        tick()
     },
     isPaused: () => isPaused
   }
