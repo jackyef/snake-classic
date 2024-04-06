@@ -1,6 +1,6 @@
-import { calculatePosition } from './helpers'
+import { calculatePosition, getEmptyCell, isSamePosition } from './helpers'
 import { init as _init } from './init'
-import { render as _render } from './renderer'
+import { render as _render, clearCell } from './renderer'
 import { Cell, GameState, SnakeBody } from './types'
 
 export const createGameEngine = () => {
@@ -39,40 +39,46 @@ export const createGameEngine = () => {
   }
 
   const render = (cellsToClear?: Cell[]) => {
-    _render(gameState.snake, cellsToClear)
+    _render(gameState, cellsToClear)
   }
 
   const updateGameState = () => {
-    // Update snake bodies
-    let tail = gameState.snake.pop()
     const toClear: Cell[] = []
 
-    if (!tail) return
-
     const head = gameState.snake[0]
-    let newTailPosition: SnakeBody
+    let newPosition: SnakeBody
 
     switch (gameState.snakeDirection) {
       case 'up':
-        newTailPosition = calculatePosition(head, { x: 0, y: -1 })
+        newPosition = calculatePosition(head, { x: 0, y: -1 })
         break;
       case 'down':
-        newTailPosition = calculatePosition(head, { x: 0, y: 1 })
+        newPosition = calculatePosition(head, { x: 0, y: 1 })
         break;
       case 'left':
-        newTailPosition = calculatePosition(head, { x: -1, y: 0 })
+        newPosition = calculatePosition(head, { x: -1, y: 0 })
         break;
       case 'right':
-        newTailPosition = calculatePosition(head, { x: 1, y: 0 })
+        newPosition = calculatePosition(head, { x: 1, y: 0 })
         break;
       default:
-        newTailPosition = tail
+        // Should never happen
+        newPosition = head
         break;
     }
 
-    toClear.push(tail)
-    tail = newTailPosition
-    gameState.snake.unshift(tail)
+    if (isSamePosition(newPosition, gameState.food)) {
+      gameState.snake.unshift(newPosition)
+      clearCell(gameState.food)
+      gameState.food = getEmptyCell(gameState.snake)
+    } else {
+      const tail = gameState.snake.pop()
+
+      if (tail) {
+        toClear.push(tail)
+      }
+      gameState.snake.unshift(newPosition)
+    }
 
     return toClear
   }

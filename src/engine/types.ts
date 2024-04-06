@@ -13,5 +13,6 @@ export type GameMap = Array<Array<CellState>>
 
 export type GameState = {
   snake: Snake
+  food: Cell
   snakeDirection: 'up' | 'down' | 'left' | 'right'
 }

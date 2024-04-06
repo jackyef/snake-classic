@@ -57,3 +57,7 @@ h1 {
 .cell[data-snake] {
   background: green;
 }
+
+.cell[data-food] {
+  background: purple;
+}

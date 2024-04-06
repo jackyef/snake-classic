@@ -1,5 +1,5 @@
 import { getCell } from "./helpers";
-import { Cell, Snake } from "./types";
+import { Cell, GameState, Snake } from "./types";
 
 const renderSnake = (snake: Snake) => {
   snake.forEach(snakeBody => {
@@ -9,15 +9,24 @@ const renderSnake = (snake: Snake) => {
   })
 }
 
+const renderFood = (food: Cell) => {
+  const cell = getCell(food.x, food.y);
+
+  cell.setAttribute('data-food', 'true')
+}
+
 export const clearCell = (cell: Cell) => {
   const c = getCell(cell.x, cell.y);
 
   c.removeAttribute('data-snake')
+  c.removeAttribute('data-food')
 }
 
-export const render = (snake: Snake, cellsToClear?: Cell[]) => {
+export const render = (gameState: GameState, cellsToClear?: Cell[]) => {
   if (cellsToClear) {
     cellsToClear.forEach(clearCell)
   }
-  renderSnake(snake)
+
+  renderSnake(gameState.snake)
+  renderFood(gameState.food)
 }

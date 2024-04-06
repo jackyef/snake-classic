@@ -1,6 +1,6 @@
 import { HEIGHT, WIDTH } from "./constants"
-import { getCellId } from "./helpers"
-import { GameMap, GameState, Snake } from "./types"
+import { getCellId, getEmptyCell } from "./helpers"
+import { Cell, GameMap, GameState, Snake } from "./types"
 
 const root = document.querySelector<HTMLDivElement>('#app')
 
@@ -38,8 +38,11 @@ export const init = (): GameState => {
 
   root!.appendChild(container)
 
+  const food = getEmptyCell(snake)
+
   return {
     snake,
-    snakeDirection: 'right'
+    snakeDirection: 'right',
+    food
   }
 }
