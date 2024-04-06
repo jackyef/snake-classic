@@ -3,9 +3,13 @@ import { init as _init } from './init'
 import { render as _render, clearCell } from './renderer'
 import { Cell, GameState, SnakeBody } from './types'
 
+type OnScoreUpdateCallback = (score: number) => void
+
 export const createGameEngine = () => {
   let isPaused = false
   let gameState: GameState
+  let _interval = 50
+  let _onScoreUpdateCallback: OnScoreUpdateCallback
 
   const init = () => {
     gameState = _init()
@@ -13,21 +17,25 @@ export const createGameEngine = () => {
     document.addEventListener('keydown', e => {
       switch (e.key) {
         case 'ArrowUp':
+          e.preventDefault()
           if (gameState.snakeDirection !== 'down') {
             gameState.snakeDirection = 'up';
           }
           break;
         case 'ArrowDown':
+          e.preventDefault()
           if (gameState.snakeDirection !== 'up') {
             gameState.snakeDirection = 'down';
           }
           break;
         case 'ArrowLeft':
+          e.preventDefault()
           if (gameState.snakeDirection !== 'right') {
             gameState.snakeDirection = 'left';
           }
           break;
         case 'ArrowRight':
+          e.preventDefault()
           if (gameState.snakeDirection !== 'left') {
             gameState.snakeDirection = 'right';
           }
@@ -40,6 +48,14 @@ export const createGameEngine = () => {
 
   const render = (cellsToClear?: Cell[]) => {
     _render(gameState, cellsToClear)
+  }
+
+  const reset = () => {
+    gameState.snake.forEach(clearCell)
+    clearCell(gameState.food)
+
+    _onScoreUpdateCallback(0)
+    gameState = getInitialGameState()
   }
 
   const updateGameState = () => {
@@ -71,12 +87,13 @@ export const createGameEngine = () => {
       gameState.snake.unshift(newPosition)
       clearCell(gameState.food)
       gameState.food = getEmptyCell(gameState.snake)
+      gameState.score += 1;
+      _onScoreUpdateCallback(gameState.score)
     } else if (gameState.snake.some((s) => isSamePosition(s, newPosition))) {
       // Check if colliding with body
-      alert('nabrak');
-      [...gameState.snake, gameState.food]
-        .forEach(clearCell)
-      gameState = getInitialGameState()
+      alert('Game over!');
+
+      reset()
     } else {
       const tail = gameState.snake.pop()
 
@@ -95,18 +112,24 @@ export const createGameEngine = () => {
         const cellsToClear = updateGameState()
         render(cellsToClear)
         tick()
-      }, 50)
+      }, _interval)
     }
+  }
+
+  const onScoreUpdate = (callback: OnScoreUpdateCallback) => {
+    _onScoreUpdateCallback = callback
   }
 
   return {
     init,
     render,
+    setLoopInterval: (newInterval: number) => _interval = newInterval,
     pause: () => isPaused = true,
     resume: () => {
       isPaused = false,
         tick()
     },
-    isPaused: () => isPaused
+    isPaused: () => isPaused,
+    onScoreUpdate
   }
 }

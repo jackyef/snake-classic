@@ -15,6 +15,7 @@ export type GameMap = Array<Array<CellState>>
 
 export type Direction = typeof DIRECTIONS[number] 
 export type GameState = {
+  score: number
   snake: Snake
   food: Cell
   snakeDirection: Direction

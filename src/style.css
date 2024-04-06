@@ -40,12 +40,12 @@ h1 {
   width: 900px;
   max-width: calc(100% - 16px);
   margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(30, 1fr);
-  grid-template-rows: repeat(18, 1fr);
   border: 1px solid lightgray;
   border-radius: 8px;
   padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(30, 1fr);
+  grid-template-rows: repeat(18, 1fr);
 }
 
 .cell {
@@ -60,4 +60,13 @@ h1 {
 
 .cell[data-food] {
   background: purple;
+}
+
+.gameUI {
+  width: 900px;
+  max-width: calc(100% - 16px);
+  margin: 12px auto 0;
+  border: 1px solid lightgray;
+  border-radius: 8px;
+  padding: 8px;
 }

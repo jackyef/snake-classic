@@ -24,7 +24,6 @@ export const init = (): GameState => {
     })
   })
 
-
   root!.appendChild(container)
 
   return getInitialGameState()

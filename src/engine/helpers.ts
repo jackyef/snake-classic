@@ -1,5 +1,5 @@
-import { DIRECTIONS, HEIGHT, WIDTH } from "./constants"
-import { Cell, Snake, SnakeBody } from "./types"
+import { HEIGHT, WIDTH } from "./constants"
+import { Cell, GameState, Snake, SnakeBody } from "./types"
 
 export const getCellId = (x: number, y: number) => {
   return `cell:${x}-${y}`
@@ -60,7 +60,7 @@ export const getEmptyCell = (occupiedCells: Cell[]): Cell => {
   }
 }
 
-export const getInitialGameState = () => {
+export const getInitialGameState = (): GameState => {
   const snake: Snake = []
   snake.push(getEmptyCell([]))
   snake.push({
@@ -79,6 +79,7 @@ export const getInitialGameState = () => {
   const initialDirections = ['left', 'right'] as const
 
   return {
+    score: 0,
     snake,
     food,
     snakeDirection: initialDirections[Math.floor(Math.random() * initialDirections.length)]
