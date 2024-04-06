@@ -1,15 +1,14 @@
+import { HEIGHT, WIDTH } from "./constants"
 import { getCellId } from "./helpers"
 import { GameMap, GameState, Snake } from "./types"
 
 const root = document.querySelector<HTMLDivElement>('#app')
-const WIDTH = 30
-const HEIGHT = 18
 
 // Map size: 30 x 18
 export const init = (): GameState => {
   const container = document.createElement('div')
   container.setAttribute('id', 'container')
-  
+
   const map = Array.from({ length: HEIGHT }).fill(
     Array.from({ length: WIDTH }).fill('')
   ) as GameMap
@@ -27,7 +26,7 @@ export const init = (): GameState => {
 
   const initialHeadPosition = {
     x: Math.floor(Math.random() * WIDTH),
-    y: Math.floor(Math.random() * HEIGHT) 
+    y: Math.floor(Math.random() * HEIGHT)
   }
 
   const snake: Snake = []
@@ -40,6 +39,7 @@ export const init = (): GameState => {
   root!.appendChild(container)
 
   return {
-    snake
+    snake,
+    snakeDirection: 'right'
   }
 }

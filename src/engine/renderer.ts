@@ -1,5 +1,5 @@
 import { getCell } from "./helpers";
-import { Snake } from "./types";
+import { Cell, Snake } from "./types";
 
 const renderSnake = (snake: Snake) => {
   snake.forEach(snakeBody => {
@@ -9,6 +9,15 @@ const renderSnake = (snake: Snake) => {
   })
 }
 
-export const render = (snake: Snake) => {
+export const clearCell = (cell: Cell) => {
+  const c = getCell(cell.x, cell.y);
+
+  c.removeAttribute('data-snake')
+}
+
+export const render = (snake: Snake, cellsToClear?: Cell[]) => {
+  if (cellsToClear) {
+    cellsToClear.forEach(clearCell)
+  }
   renderSnake(snake)
 }

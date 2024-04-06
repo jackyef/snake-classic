@@ -4,9 +4,14 @@ export type SnakeBody = {
   y: number
 }
 
+export type Cell = {
+  x: number
+  y: number
+}
 export type CellState = 'Snake' | 'Food' | null
 export type GameMap = Array<Array<CellState>>
 
 export type GameState = {
   snake: Snake
+  snakeDirection: 'up' | 'down' | 'left' | 'right'
 }
